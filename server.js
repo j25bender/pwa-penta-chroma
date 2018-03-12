@@ -3,8 +3,9 @@ const app = express();
 const bodyParser = require('body-parser');
 
 app.set('port', process.env.PORT || 3000);
+app.use(express.static('public'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extend: true }));
+// app.use(bodyParser.urlencoded({ extend: true }));
 app.locals.title = 'Palette Picker';
 
 app.locals.palettes = [
@@ -44,11 +45,17 @@ app.get('/api/v1/palettes/:id', (request, response) => {
 
 app.post('/api/v1/palettes', (request, response) => {
   const id = Date.now();
-  const { palette } = request.body;
+  const { title, palette } = request.body;
 
-  app.locals.palettes.push(message);
-  response.status(201).json({ id, palette });
-})
+  if(!title || !palette) {
+    response.status(422).send({
+      error: 'Title or Palette is missing.'
+    });
+  } else {
+    app.locals.palettes.push(palette);
+    response.status(201).json({ id, title, palette });
+  }
+});
 
 app.listen(app.get('port'), () => {
   console.log(`${app.locals.title} is running on ${app.get('port')}.`);
