@@ -1,0 +1,49 @@
+body {
+  background-color: black;
+}
+
+#color-pentagram {
+  height: 500px;
+  width: 500px;
+  border: 1px solid;  
+  border-radius: 100%;
+  background-color: white;
+  position:absolute;
+  left:0; right:0;
+  top:0; bottom:0;
+  margin:auto;
+  z-index: 2;
+}
+
+/* #inner-color-pentagram {
+  height: 1px;
+  width: 1px;
+  border-radius: 100%;
+  border: 1px solid;
+  background-color: white;
+  position:absolute;
+  left:0; right:0;
+  top:0; bottom:0;
+  margin:auto;
+} */
+
+svg {
+  position: absolute;
+}
+
+#poly1 {
+  margin-top: 175px;
+}
+
+#poly2 {
+  margin-top: 213px;
+}
+
+#poly3 {
+  margin-top: 175px;
+  margin-left: 250px;
+}
+
+#poly4 {
+  margin-left: 250px;
+}
