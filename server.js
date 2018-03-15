@@ -9,17 +9,17 @@ app.use(bodyParser.json());
 app.locals.title = 'Palette Picker';
 
 app.locals.palettes = [
-  { id: '1', title: 'palette one', palette: [{color1: 'red', locked: false},
-                                           {color2: 'orange', locked: false},
-                                           {color3: 'yellow', locked: false},
-                                           {color4: 'green', locked: false},
-                                           {color5: 'blue', locked: false}]
+  { id: '1', title: 'palette one', palette: [{color1: 'red'},
+                                           {color2: 'orange'},
+                                           {color3: 'yellow'},
+                                           {color4: 'green'},
+                                           {color5: 'blue'}]
   },
-  { id: '2', title: 'palette two', palette: [{color1: 'indigo', locked: false},
-                                           {color2: 'violet', locked: false},
-                                           {color3: 'mangenta', locked: false},
-                                           {color4: 'puce', locked: false},
-                                           {color5: 'ghostwhite', locked: false}]
+  { id: '2', title: 'palette two', palette: [{color1: 'indigo'},
+                                           {color2: 'violet'},
+                                           {color3: 'mangenta'},
+                                           {color4: 'puce'},
+                                           {color5: 'ghostwhite'}]
   }
 ];
 
