@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const environment = process.env.NODE_ENV || 'development';
-const configuration = require('../knexfile')[environment];
+const configuration = require('./knexfile')[environment];
 const database = require('knex')(configuration);
 
 app.set('port', process.env.PORT || 3000);
@@ -17,10 +17,43 @@ app.get('/', (request, response) => {
   response.send('hello platte picker!');
 });
 
-app.get('/api/v1/palettes', (request, response) => {
-  const palettes = app.locals.palettes;
+// app.get('/api/v1/projects', (request, response) => {
+//   // const palettes = app.locals.palettes;
 
-  response.json(palettes);
+//   // response.json(palettes);
+//   database('projects').select()
+//   .then((projects) => {
+//     response.status(200).json(projects);
+//   })
+//   .catch((error) => {
+//     response.status(500).json({ error });
+//   });
+// });
+
+// app.get('/api/v1/projects/:id', (request, response) => {
+//   // const palettes = app.locals.palettes;
+
+//   // response.json(palettes);
+//   database('projects').select()
+//   .then((projects) => {
+//     response.status(200).json(projects);
+//   })
+//   .catch((error) => {
+//     response.status(500).json({ error });
+//   });
+// });
+
+app.get('/api/v1/palettes', (request, response) => {
+  // const palettes = app.locals.palettes;
+
+  // response.json(palettes);
+  database('palettes').select()
+  .then((palettes) => {
+    response.status(200).json(palettes);
+  })
+  .catch((error) => {
+    response.status(500).json({ error });
+  });
 });
 
 app.get('/api/v1/palettes/:id', (request, response) => {
@@ -35,7 +68,6 @@ app.get('/api/v1/palettes/:id', (request, response) => {
 
 app.post('/api/v1/palettes', (request, response) => {
   const id = Date.now();
-  console.log(request.body)
   const { title, palette } = request.body;
 
   if(!title) {
