@@ -8,11 +8,15 @@ exports.seed = function(knex, Promise) {
         }, 'id')
         .then(project => {
           return knex('palettes').insert([
-            {color1: 'red', project_id: project[0]},
-            {color2: 'orange', project_id: project[0]},
-            {color3: 'yellow', project_id: project[0]},
-            {color4: 'green', project_id: project[0]},
-            {color5: 'blue', project_id: project[0]}
+            {
+              project_id: project[0],
+              palette_name: 'palette 1',
+              color1: 'red',
+              color2: 'orange',
+              color3: 'yellow',
+              color4: 'green',
+              color5: 'blue'
+            }
           ]);
         })
         .then(() => console.log('Seeding complete!'))
