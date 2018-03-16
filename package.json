@@ -1,10 +1,10 @@
 {
   "name": "palette-picker",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "",
@@ -12,6 +12,18 @@
   "dependencies": {
     "body-parser": "^1.18.2",
     "express": "^4.16.3",
-    "jquery": "^3.3.1"
-  }
+    "jquery": "^3.3.1",
+    "knex": "^0.14.4",
+    "pg": "^7.4.1"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/j25bender/palette-picker.git"
+  },
+  "bugs": {
+    "url": "https://github.com/j25bender/palette-picker/issues"
+  },
+  "homepage": "https://github.com/j25bender/palette-picker#readme",
+  "description": ""
 }
