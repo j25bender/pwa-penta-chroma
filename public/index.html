@@ -2,29 +2,34 @@
 <html lang="en">
 <head>
   <link href="css/styles.css" rel="stylesheet">
-  <title>Document</title>
-</head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script></head>
 <body>
-  <h1>HELLO PALETTE PICKER!!!</h1>
+  <header>
+    <h3 id="title">PENTACHROMA</h3>
+    <h5>Press the spacebar to generate color palettes!</h5>
+  </header>
   <div id="color-pentagram">
-    <svg height="295" width="500" id="poly1">
-      <polygon points="9,10 250,73 110,282" style="fill:lightgrey;stroke:purple;stroke-width:1" />
+    <svg height="288" width="250" id="svgPoly1">
+      <polygon points="9,10 250,73 110,288" style="fill:rgb(139, 50, 152);" id="poly1" />
     </svg>
-    <svg height="300" width="500" id="poly2">
-      <polygon points="250,35 380,250 110,245" style="fill:lightblue;stroke:purple;stroke-width:1" />
+    <svg height="250" width="380" id="svgPoly2">
+      <polygon points="145,27 270,250 0,250" style="fill:rgb(42, 17, 172);" id="poly2" />
     </svg>
-    <svg height="295" width="500" id="poly3">
-      <polygon points="242,10 1,73 130,288" style="fill:lightgreen;stroke:purple;stroke-width:1" />
+    <svg height="290" width="240" id="svgPoly3">
+      <polygon points="242,10 0,73 130,288" style="fill:rgb(21, 75, 149);" id="poly3" />
     </svg>
-    <svg height="295" width="500" id="poly4">
-      <polygon points="0,0 0,250 242,185" style="fill:lightcyan;stroke:purple;stroke-width:1" />
+    <svg height="250" width="250" id="svgPoly4">
+      <polygon points="0,0 0,250 242,185" style="fill:rgb(136, 99, 227);" id="poly4" />
     </svg>
-    <svg height="295" width="500" id="poly5">
-      <polygon points="250,0 8,185 250,250" style="fill:lightpink;stroke:purple;stroke-width:1" />
+    <svg height="250" width="250" id="svgPoly5">
+      <polygon points="250,0 8,185 250,250" style="fill:rgb(221, 8, 250);" id="poly5" />
     </svg>
-    <div id="inner-color-pentagram">
+    <div id="save-palette-container">
+      <input id="title-input" type="text"> 
+      <button id="save-button" type="submit">SAVE</button>          
     </div>
   </div>
+  <hr>
   <script src="js/scripts.js"></script>  
 </body>
 </html>

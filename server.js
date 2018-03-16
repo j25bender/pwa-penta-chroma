@@ -1,6 +1,9 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
+const environment = process.env.NODE_ENV || 'development';
+const configuration = require('../knexfile')[environment];
+const database = require('knex')(configuration);
 
 app.set('port', process.env.PORT || 3000);
 app.use(express.static('public'));
@@ -8,20 +11,7 @@ app.use(bodyParser.json());
 // app.use(bodyParser.urlencoded({ extend: true }));
 app.locals.title = 'Palette Picker';
 
-app.locals.palettes = [
-  { id: '1', title: 'palette one', palette: [{color1: 'red', locked: false},
-                                           {color2: 'orange', locked: false},
-                                           {color3: 'yellow', locked: false},
-                                           {color4: 'green', locked: false},
-                                           {color5: 'blue', locked: false}]
-  },
-  { id: '2', title: 'palette two', palette: [{color1: 'indigo', locked: false},
-                                           {color2: 'violet', locked: false},
-                                           {color3: 'mangenta', locked: false},
-                                           {color4: 'puce', locked: false},
-                                           {color5: 'ghostwhite', locked: false}]
-  }
-];
+app.locals.palettes = [];
 
 app.get('/', (request, response) => {
   response.send('hello platte picker!');
@@ -45,14 +35,15 @@ app.get('/api/v1/palettes/:id', (request, response) => {
 
 app.post('/api/v1/palettes', (request, response) => {
   const id = Date.now();
+  console.log(request.body)
   const { title, palette } = request.body;
 
-  if(!title || !palette) {
+  if(!title) {
     response.status(422).send({
-      error: 'Title or Palette is missing.'
+      error: 'Title is missing.'
     });
   } else {
-    app.locals.palettes.push(palette);
+    app.locals.palettes.push({ id, title, palette });
     response.status(201).json({ id, title, palette });
   }
 });
