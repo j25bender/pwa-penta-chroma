@@ -27,7 +27,8 @@ app.get('/api/v1/projects', (request, response) => {
 });
 
 app.get('/api/v1/projects/:id', (request, response) => {
-  database('projects').select()
+  database('projects').where('id', request.params.id)
+  .select()
   .then((projects) => {
     response.status(200).json(projects);
   })
@@ -54,7 +55,7 @@ app.get('/api/v1/projects/:id/palettes/', (request, response) => {
         response.status(200).json(palette);    
       } else {
         response.status(404).json({
-          error: `Could not find paper with id ${request.params.id}`
+          error: `Could not find palette with id ${request.params.id}`
         })
       }
     })
@@ -64,19 +65,17 @@ app.get('/api/v1/projects/:id/palettes/', (request, response) => {
 });
 
 app.post('/api/v1/projects', (request, response) => {
-  const project = request.body;
+  const { title } = request.body;
 
-  for (let requiredParameter of ['title']) {
-    if (!project[requiredParameter]) {
-      return response
-        .status(422)
-        .send({ error: `Expected format: { title: <String> }. You're missing a "${requiredParameter}" property.` });
-    }
+  if (!title) {
+    return response
+      .status(422)
+      .send({ error: `Expected format: { title: <String> }. You're missing a Title.` });
   }
 
-  database('projects').insert(project, 'id')
+  database('projects').insert({ title }, 'id')
     .then(project => {
-      response.status(201).json({ id: project[0] })
+      response.status(201).json({ id: project[0], title })
     })
     .catch(error => {
       response.status(500).json({ error });
@@ -85,7 +84,7 @@ app.post('/api/v1/projects', (request, response) => {
 
 app.post('/api/v1/palettes', (request, response) => {
   const palette = request.body;
-
+  const paletteObject = request.body;
   for (let requiredParameter of ['palette_name']) {
     if (!palette[requiredParameter]) {
       return response
@@ -96,7 +95,7 @@ app.post('/api/v1/palettes', (request, response) => {
 
   database('palettes').insert(palette, 'id')
     .then(palette => {
-      response.status(201).json({ id: palette[0] })
+      response.status(201).json(Object.assign({}, { id: palette[0] }, paletteObject))
     })
     .catch(error => {
       response.status(500).json({ error });
@@ -112,7 +111,7 @@ app.delete('/api/v1/palettes/:id', (request, response) => {
         response.status(200).json(request.body);    
       } else {
         response.status(404).json({
-          error: `Could not find paper with id ${request.params.id}`
+          error: `Could not find palette with id ${request.params.id}`
         })
       }
     })
