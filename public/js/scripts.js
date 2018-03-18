@@ -7,9 +7,14 @@ const paletteState = {
 }
 
 $(window).keypress((e) => {
-  if(e.which === 32) {
+  if(e.which === 32 &&
+    !$(document.activeElement).is('#palette-input') && 
+    !$(document.activeElement).is('#save-palette') &&
+    !$(document.activeElement).is('#title-input') &&
+    !$(document.activeElement).is('#save-title')) {
     setRandomPalette();
   }
+  // $('body').addClass('no-scroll');  
 });
 
 const setRandomPalette = () => {
@@ -39,14 +44,81 @@ $('#color-pentagram').click((e) => {
   $(elementId).hasClass('locked') ? $(elementId).removeClass('locked') : $(elementId).addClass('locked');  
 });
 
-$('#save-button').click( async (e) => {
+$('#save-title').click( async (e) => {
   const title = $('#title-input').val();
-  await fetch('http://localhost:3000/api/v1/palettes', {
+  await fetch('/api/v1/projects', {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({
-      title: title,
-      palette: paletteState.palette
+      title
     })
   })
-})
+  $('body').removeClass('no-scroll');
+});
+
+$('#save-palette').click( async (e) => {
+  createPalettes(paletteState.palette)
+  const paletteName = $('#palette-input').val();
+  const projectId = $('#select-options').val();
+
+  await fetch('/api/v1/palettes', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      palette_name: paletteName,
+      project_id: parseInt(projectId),
+      ...paletteState.palette})
+  })
+  $('body').removeClass('no-scroll');
+});
+
+const deletePalette = async (e) => {
+  const paletteId = e.target.id;
+  $(e.target).parent().remove();
+  await fetch(`/api/v1/palettes/${paletteId}`, {
+    method: 'DELETE',
+    headers: {'Content-Type': 'application/json'}
+  });
+};
+
+$('#project-container').on('click', '.delete', deletePalette);
+
+const getProjects = async () => {
+  const initialFetch = await fetch('/api/v1/projects');
+  const projects = await initialFetch.json();
+  projects.forEach(project => createProjects(project));
+}
+
+const createProjects = (project) => {
+  $('#select-options').append(`<option value=${project.id}>${project.title}</option>`);
+  $('#project-container').append(`<h2 id=${project.id}>${project.title}</h2>`)
+}
+
+const getPalettes = async () => {
+  const initialFetch = await fetch('/api/v1/palettes');
+  const palettes = await initialFetch.json();
+  palettes.forEach(palette => createPalettes(palette));
+}
+
+const createPalettes = (palette) => {
+  const addColors = createColors(palette);  
+  $('#' + palette.project_id).append(`<div><h3 id=${palette.id}>${palette.palette_name}</h3><div id="palette-container">${addColors}</div><button class="delete" id=${palette.id}>DELETE</button></div>`);
+}
+
+const createColors = (palette) => {
+  let result = '';
+  for(let i = 1; i <= 5; i++) {
+    if(palette) {
+      result += `<div style="background-color:${palette[`color${i}`]}">${palette[`color${i}`]}</div>`
+    }    
+  }
+  return result;
+}
+
+const pageSetup = () => {
+  getProjects();
+  getPalettes();
+}
+
+$(document).ready( pageSetup );
+ 

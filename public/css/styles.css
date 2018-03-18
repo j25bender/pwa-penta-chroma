@@ -3,6 +3,11 @@ body {
   margin: 0;
 }
 
+/* .no-scroll {
+  height: 100%;
+  overflow: hidden;
+} */
+
 header {
   display: flex;
   flex-direction: row;
@@ -66,17 +71,62 @@ hr {
 #save-palette-container {
   display: flex;
   flex-direction: row;
-  /* justify-content: center; */
+}
+
+#select-options {
+  margin-top: 485px;
+  height: 27px;
+  margin-left: 105px;  
+  
+}
+
+#palette-input {
+  height: 20px;
+  width: 135px;
+  margin-top: 485px;
+  margin-left: 10px;  
 }
 
 #title-input {
+  position: absolute;
   height: 20px;
-  width: 185px;
-  margin-top: 485px;
-  margin-left: 115px;  
+  width: 135px;
+  margin-top: -65px;
+  margin-left: 10px;  
 }
 
-button {
+#save-palette {
   margin-top: 485px;
-  margin-left: 30px;
+  margin-left: 10px;
+  width: 52px;
+}
+
+#project-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  color: ghostwhite;
+  margin-top: 100px;
+}
+
+#project-container h3 {
+  border: 1px solid ghostwhite;
+  padding: 25px;
+}
+
+#project-container p {
+  position: absolute;
+  height: 20px;
+  width: 145px;
+  margin-top: -85px;
+  margin-left: 10px;  
+}
+
+#save-title {
+  position: absolute;
+  margin-left: 10px;
+  margin-top: -65px;
+  margin-left: 118px;
+  height: 25px;
+  width: 52px;
 }
