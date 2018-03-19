@@ -8,13 +8,6 @@ const database = require('knex')(configuration);
 app.set('port', process.env.PORT || 3000);
 app.use(express.static('public'));
 app.use(bodyParser.json());
-app.locals.title = 'Palette Picker';
-
-app.locals.palettes = [];
-
-app.get('/', (request, response) => {
-  response.send('hello platte picker!');
-});
 
 app.get('/api/v1/projects', (request, response) => {
   database('projects').select()
@@ -89,7 +82,7 @@ app.post('/api/v1/palettes', (request, response) => {
     if (!palette[requiredParameter]) {
       return response
         .status(422)
-        .send({ error: `Expected format: { title: <String> }. You're missing a "${requiredParameter}" property.` });
+        .send({ error: `Expected format: { palette_name: <String> }. You\'re missing a "${requiredParameter}" property.` });
     }
   }
 
@@ -121,5 +114,7 @@ app.delete('/api/v1/palettes/:id', (request, response) => {
 });
 
 app.listen(app.get('port'), () => {
-  console.log(`${app.locals.title} is running on ${app.get('port')}.`);
+  console.log(`PENTACHROMA is running on ${app.get('port')}.`);
 });
+
+module.exports = app;
