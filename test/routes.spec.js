@@ -8,7 +8,7 @@ const database = require('knex')(configuration);
 chai.use(chaiHttp);
 
 describe('Client Routes', () => {
-  it('Should return homepage with text', () => {
+  it('GET Should return homepage with text', () => {
     return chai.request(app)
     .get('/')
     .then(response => {
@@ -21,7 +21,7 @@ describe('Client Routes', () => {
     });
   });
 
-  it('Requesting a non-existent path should return 404', () => {
+  it('GET Requesting a non-existent path should return 404', () => {
     return chai.request(app)
     .get('/so-sad')
     .then(response => {
@@ -71,33 +71,21 @@ describe('API Routes', () => {
   describe(`GET /api/v1/projects/:id`, () => {
     it('Should return a project by id', () => {
       return chai.request(app)
-      .get('/api/v1/projects/1')
+      .get('/api/v1/projects/0')
       .then(response => {
-        console.log(response.body)
         response.should.have.status(200);
         response.should.be.json;
         response.body.should.be.a('array');
-
-        // response.body[0].should.have.property('id');
-        // response.body.id.should.be.a('number');
-
-        // response.body.should.have.property('title');
-        // response.body.title.should.equal('Project1');
-
-        // response.body.should.have.property('created_at');
-        // response.body.created_at.should.be.a('string');
-        
-        // response.body.should.have.property('updated_at');
-        // response.body.updated_at.should.be.a('string');
       });
     });
   });
 
-  describe('GET /api/v1/projects', () => {
+  describe('GET /api/v1/projects/:id/palettes', () => {
     it('Should return all of the projects', () => {
       return chai.request(app)
-      .get('/api/v1/projects')
+      .get('/api/v1/projects/0/palettes')
       .then(response => {
+        console.log(response.body)
         response.should.have.status(200);
         response.should.be.json;
         response.body.should.be.a('array');
@@ -137,7 +125,7 @@ describe('API Routes', () => {
       });
     });
 
-    it('Should NOT create a new project if there is no title', () => {
+    it('POST Should NOT create a new project if there is no title', () => {
       return chai.request(app)
       .post('/api/v1/projects')
       .send({
@@ -193,7 +181,7 @@ describe('API Routes', () => {
       });
     });
 
-    it('Should NOT create a new palette if there is no name', () => {
+    it('POST Should NOT create a new palette if there is no name', () => {
       return chai.request(app)
       .post('/api/v1/palettes')
       .send({
