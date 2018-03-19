@@ -68,6 +68,31 @@ describe('API Routes', () => {
     });
   });
 
+  describe(`GET /api/v1/projects/:id`, () => {
+    it('Should return a project by id', () => {
+      return chai.request(app)
+      .get('/api/v1/projects/1')
+      .then(response => {
+        console.log(response.body)
+        response.should.have.status(200);
+        response.should.be.json;
+        response.body.should.be.a('array');
+
+        // response.body[0].should.have.property('id');
+        // response.body.id.should.be.a('number');
+
+        // response.body.should.have.property('title');
+        // response.body.title.should.equal('Project1');
+
+        // response.body.should.have.property('created_at');
+        // response.body.created_at.should.be.a('string');
+        
+        // response.body.should.have.property('updated_at');
+        // response.body.updated_at.should.be.a('string');
+      });
+    });
+  });
+
   describe('GET /api/v1/projects', () => {
     it('Should return all of the projects', () => {
       return chai.request(app)
