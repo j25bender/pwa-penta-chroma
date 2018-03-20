@@ -17,10 +17,11 @@ exports.seed = function(knex, Promise) {
               color4: 'green',
               color5: 'blue'
             }
-          ])
+          ]);
         })
-        .catch(error => console.log(`Inner Error seeding data: ${error}`))
+        .then(() => console.log('Seeding complete!'))
+        .catch(error => console.log(`Error seeding data: ${error}`))
       ])
     })
-  .catch(error => console.log(`Outer Error seeding data: ${error}`));
+  .catch(error => console.log(`Error seeding data: ${error}`));
 };

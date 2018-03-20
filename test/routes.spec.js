@@ -3,7 +3,7 @@ const should = chai.should();
 const chaiHttp = require('chai-http');
 const app = require('../server');
 
-const environment =  'test';
+const environment = process.env.NODE_ENV || 'test';
 const configuration = require('../knexfile')[environment];
 const database = require('knex')(configuration);
 
@@ -71,7 +71,10 @@ describe('API Routes', () => {
         
         response.body[0].should.have.property('updated_at');
         response.body[0].updated_at.should.be.a('string');
-      });
+      })
+      .catch(error => {
+        throw error;
+      })
     });
   });
 
@@ -80,36 +83,45 @@ describe('API Routes', () => {
       return chai.request(app)
       .get('/api/v1/projects')
       .then(response => {
-        console.log(response)
         response.should.have.status(200);
         response.should.be.json;
         response.body.should.be.a('array');
-      });
+      })
+      .catch(error => {
+        throw error;
+      })
     });
   });
 
   describe('GET /api/v1/projects/:id/palettes', () => {
     it('Should return all of the projects', () => {
-      return chai.request(app)
-      .get('/api/v1/projects/1/palettes')
-      .then(response => {
-        console.log(response.body)
-        response.should.have.status(200);
-        response.should.be.json;
-        response.body.should.be.a('array');
-
-        response.body[0].should.have.property('id');
-        response.body[0].id.should.be.a('number');
-
-        response.body[0].should.have.property('title');
-        response.body[0].title.should.equal('Project1');
-
-        response.body[0].should.have.property('created_at');
-        response.body[0].created_at.should.be.a('string');
-        
-        response.body[0].should.have.property('updated_at');
-        response.body[0].updated_at.should.be.a('string');
-      });
+      return chai.request(app).get('/api/v1/projects')
+        .then((response) => {
+          const id = response.body[0].id;
+          
+          chai.request(app)
+          .get(`/api/v1/projects/${id}/palettes`)
+          .then(response => {
+            response.should.have.status(200);
+            response.should.be.json;
+            response.body.should.be.a('array');
+    
+            response.body[0].should.have.property('id');
+            response.body[0].id.should.be.a('number');
+    
+            response.body[0].should.have.property('title');
+            response.body[0].title.should.equal('Project1');
+    
+            response.body[0].should.have.property('created_at');
+            response.body[0].created_at.should.be.a('string');
+            
+            response.body[0].should.have.property('updated_at');
+            response.body[0].updated_at.should.be.a('string');
+          })
+          .catch(error => {
+            throw error;
+          })
+      })
     });
   });
 
@@ -130,14 +142,17 @@ describe('API Routes', () => {
         
         response.body.should.have.property('title');
         response.body.title.should.equal('Project 25');
-      });
+      })
+      .catch(error => {
+        throw error;
+      })
     });
 
     it('POST Should NOT create a new project if there is no title', () => {
       return chai.request(app)
       .post('/api/v1/projects')
       .send({
-        title: null
+        
       })
       .then(response => {
         response.should.have.status(422);
@@ -186,7 +201,10 @@ describe('API Routes', () => {
 
         response.body.should.have.property('color5');
         response.body.color5.should.equal('rgb(221, 8, 250)');
-      });
+      })
+      .catch(error => {
+        throw error;
+      })
     });
 
     it('POST Should NOT create a new palette if there is no name', () => {
