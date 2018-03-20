@@ -2,7 +2,9 @@ const chai = require('chai');
 const should = chai.should();
 const chaiHttp = require('chai-http');
 const app = require('../server');
-const configuration = require('../knexfile')['test'];
+
+const environment =  'test';
+const configuration = require('../knexfile')[environment];
 const database = require('knex')(configuration);
 
 chai.use(chaiHttp);
@@ -36,13 +38,18 @@ describe('Client Routes', () => {
 
 describe('API Routes', () => {
 
-  before(() => {
-    return database.migrate.latest()
-  })
-
-  beforeEach(() => {
-    return database.seed.run();
-  })
+  beforeEach(function(done) {
+    database.migrate.rollback()
+    .then(function() {
+      database.migrate.latest()
+      .then(function() {
+        return database.seed.run()
+        .then(function() {
+          done();
+        });
+      });
+    });
+  });
 
   describe('GET /api/v1/projects', () => {
     it('Should return all of the projects', () => {
@@ -71,8 +78,9 @@ describe('API Routes', () => {
   describe(`GET /api/v1/projects/:id`, () => {
     it('Should return a project by id', () => {
       return chai.request(app)
-      .get('/api/v1/projects/0')
+      .get('/api/v1/projects')
       .then(response => {
+        console.log(response)
         response.should.have.status(200);
         response.should.be.json;
         response.body.should.be.a('array');
@@ -83,7 +91,7 @@ describe('API Routes', () => {
   describe('GET /api/v1/projects/:id/palettes', () => {
     it('Should return all of the projects', () => {
       return chai.request(app)
-      .get('/api/v1/projects/0/palettes')
+      .get('/api/v1/projects/1/palettes')
       .then(response => {
         console.log(response.body)
         response.should.have.status(200);

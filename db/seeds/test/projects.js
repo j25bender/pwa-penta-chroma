@@ -3,14 +3,13 @@ exports.seed = function(knex, Promise) {
     .then(() => knex('projects').del())
     .then(() => {
       return Promise.all([
-        knex('projects').insert([
-          { id: 0, title: 'Project1' }
-        ], 'id')
+        knex('projects').insert({
+          title: 'Project1'
+        }, 'id')
         .then(project => {
           return knex('palettes').insert([
             {
-              id: 0,
-              project_id: 0,
+              project_id: project[0],
               palette_name: 'palette 1',
               color1: 'red',
               color2: 'orange',
@@ -18,11 +17,10 @@ exports.seed = function(knex, Promise) {
               color4: 'green',
               color5: 'blue'
             }
-          ]);
+          ])
         })
-        .then(() => console.log('Seeding complete!'))
-        .catch(error => console.log(`Error seeding data: ${error}`))
+        .catch(error => console.log(`Inner Error seeding data: ${error}`))
       ])
     })
-  .catch(error => console.log(`Error seeding data: ${error}`));
+  .catch(error => console.log(`Outer Error seeding data: ${error}`));
 };
