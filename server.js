@@ -11,6 +11,22 @@ app.use(express.static('public'));
 app.use(bodyParser.json());
 app.locals.title = 'Palette Picker';
 
+// const requireHttps = (request, response, next) => {
+//   if(request.headers['x-forwarded-proto'] !== 'https') {
+//     return response.redirect('https://' + request.hostname + response.url)
+//   }
+//   response.redirect('https://' + request.hostname + response.url) 
+// };
+
+const requireHTTPS = (req, res, next) => {
+  if (req.headers['x-forwarded-proto'] !== 'https') {
+    return res.redirect('https://' + req.get('host') + req.url);
+  }
+    next();
+};
+
+if (process.env.NODE_ENV === 'production') { app.use(requireHTTPS); }
+
 app.get('/api/v1/projects', (request, response) => {
   database('projects').select()
   .then((projects) => {
