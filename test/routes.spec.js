@@ -74,7 +74,7 @@ describe('API Routes', () => {
       })
       .catch(error => {
         throw error;
-      })
+      });
     });
   });
 
@@ -89,16 +89,15 @@ describe('API Routes', () => {
       })
       .catch(error => {
         throw error;
-      })
+      });
     });
   });
 
   describe('GET /api/v1/projects/:id/palettes', () => {
-    it('Should return all of the projects', () => {
+    it('Should return all of the palettes of a project', () => {
       return chai.request(app).get('/api/v1/projects')
-        .then((response) => {
+        .then(response => {
           const id = response.body[0].id;
-          
           chai.request(app)
           .get(`/api/v1/projects/${id}/palettes`)
           .then(response => {
@@ -120,8 +119,8 @@ describe('API Routes', () => {
           })
           .catch(error => {
             throw error;
-          })
-      })
+          });
+      });
     });
   });
 
@@ -145,14 +144,14 @@ describe('API Routes', () => {
       })
       .catch(error => {
         throw error;
-      })
+      });
     });
 
     it('POST Should NOT create a new project if there is no title', () => {
       return chai.request(app)
       .post('/api/v1/projects')
       .send({
-        
+        //Title intentionally missing to test sad path
       })
       .then(response => {
         response.should.have.status(422);
@@ -204,7 +203,7 @@ describe('API Routes', () => {
       })
       .catch(error => {
         throw error;
-      })
+      });
     });
 
     it('POST Should NOT create a new palette if there is no name', () => {
@@ -216,6 +215,30 @@ describe('API Routes', () => {
       .then(response => {
         response.should.have.status(422);
         response.body.error.should.equal('Expected format: { palette_name: <String> }. You\'re missing a "palette_name" property.')
+      })
+      .catch(error => {
+        throw error;
+      });
+    });
+  });
+
+  describe('DELETE /api/v1/palettes/:id', () => {
+    it('Should delete a palette by id', () => {
+      return chai.request(app)
+      .delete('/api/v1/palettes/1')
+      .then(response => {
+        response.should.have.status(200);
+      })
+      .catch(error => {
+        throw error;
+      });
+    });
+
+    it('Should NOT delete a palette if id doesn\'t exist', () => {
+      return chai.request(app)
+      .delete('/api/v1/palettes')
+      .then(response => {
+        response.should.have.status(404);
       })
       .catch(error => {
         throw error;

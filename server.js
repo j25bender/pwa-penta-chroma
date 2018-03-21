@@ -11,16 +11,9 @@ app.use(express.static('public'));
 app.use(bodyParser.json());
 app.locals.title = 'Palette Picker';
 
-// const requireHttps = (request, response, next) => {
-//   if(request.headers['x-forwarded-proto'] !== 'https') {
-//     return response.redirect('https://' + request.hostname + response.url)
-//   }
-//   response.redirect('https://' + request.hostname + response.url) 
-// };
-
-const requireHTTPS = (req, res, next) => {
-  if (req.headers['x-forwarded-proto'] !== 'https') {
-    return res.redirect('https://' + req.get('host') + req.url);
+const requireHTTPS = (request, response, next) => {
+  if (request.headers['x-forwarded-proto'] !== 'https') {
+    return response.redirect('https://' + request.get('host') + request.url);
   }
     next();
 };
@@ -117,7 +110,7 @@ app.delete('/api/v1/palettes/:id', (request, response) => {
   database('palettes').where('id', request.params.id)
     .select()
     .del()
-    .then( palette => {
+    .then(palette => {
       if(!palette.length) {
         response.status(200).json(request.body);    
       } else {
