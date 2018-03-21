@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
+
 const environment = process.env.NODE_ENV || 'development';
 const configuration = require('./knexfile')[environment];
 const database = require('knex')(configuration);
@@ -10,11 +11,14 @@ app.use(express.static('public'));
 app.use(bodyParser.json());
 app.locals.title = 'Palette Picker';
 
-app.locals.palettes = [];
+const requireHTTPS = (request, response, next) => {
+  if (request.headers['x-forwarded-proto'] !== 'https') {
+    return response.redirect('https://' + request.get('host') + request.url);
+  }
+    next();
+};
 
-app.get('/', (request, response) => {
-  response.send('hello platte picker!');
-});
+if (process.env.NODE_ENV === 'production') { app.use(requireHTTPS); }
 
 app.get('/api/v1/projects', (request, response) => {
   database('projects').select()
@@ -89,7 +93,7 @@ app.post('/api/v1/palettes', (request, response) => {
     if (!palette[requiredParameter]) {
       return response
         .status(422)
-        .send({ error: `Expected format: { title: <String> }. You're missing a "${requiredParameter}" property.` });
+        .send({ error: `Expected format: { palette_name: <String> }. You're missing a "${requiredParameter}" property.` });
     }
   }
 
@@ -106,7 +110,7 @@ app.delete('/api/v1/palettes/:id', (request, response) => {
   database('palettes').where('id', request.params.id)
     .select()
     .del()
-    .then( palette => {
+    .then(palette => {
       if(!palette.length) {
         response.status(200).json(request.body);    
       } else {
@@ -123,3 +127,5 @@ app.delete('/api/v1/palettes/:id', (request, response) => {
 app.listen(app.get('port'), () => {
   console.log(`${app.locals.title} is running on ${app.get('port')}.`);
 });
+
+module.exports = app;
