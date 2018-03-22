@@ -18,6 +18,8 @@ const requireHTTPS = (request, response, next) => {
     next();
 };
 
+app.enable('trust proxy')
+
 if (process.env.NODE_ENV === 'production') { app.use(requireHTTPS); }
 
 app.get('/api/v1/projects', (request, response) => {
