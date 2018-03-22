@@ -38,13 +38,13 @@ describe('Client Routes', () => {
 
 describe('API Routes', () => {
 
-  beforeEach(function(done) {
+  beforeEach((done) => {
     database.migrate.rollback()
-    .then(function() {
+    .then(() => {
       database.migrate.latest()
-      .then(function() {
+      .then(() => {
         return database.seed.run()
-        .then(function() {
+        .then(() => {
           done();
         });
       });

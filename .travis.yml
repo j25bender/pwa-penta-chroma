@@ -4,6 +4,3 @@ node_js:
 services: postgresql
 before_script:
   - psql -c 'create database testprojects;' -U postgres
-test: 
-  adapter: postgresql
-  database: testprojects
