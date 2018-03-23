@@ -1,3 +1,10 @@
+const pageSetup = () => {
+  getProjects();
+  getPalettes();
+}
+
+$(document).ready( pageSetup );
+
 const paletteState = {
   palette: {"color1": "rgb(139, 50, 152)",
             "color2": "rgb(42, 17, 172)",
@@ -14,7 +21,6 @@ $(window).keypress((e) => {
     !$(document.activeElement).is('#save-title')) {
     setRandomPalette();
   }
-  // $('body').addClass('no-scroll');  
 });
 
 const setRandomPalette = () => {
@@ -53,7 +59,6 @@ $('#save-title').click( async (e) => {
       title
     })
   })
-  $('body').removeClass('no-scroll');
 });
 
 $('#save-palette').click( async (e) => {
@@ -69,7 +74,6 @@ $('#save-palette').click( async (e) => {
       project_id: parseInt(projectId),
       ...paletteState.palette})
   })
-  $('body').removeClass('no-scroll');
 });
 
 const deletePalette = async (e) => {
@@ -115,10 +119,14 @@ const createColors = (palette) => {
   return result;
 }
 
-const pageSetup = () => {
-  getProjects();
-  getPalettes();
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {    
+    navigator.serviceWorker.register('../../service-worker.js')
+      .then(registration => {
+        console.log('ServiceWorker registration successful');
+      }).catch(error => {
+        console.log(`ServiceWorker registration failed: ${error}`);
+      });
+  });
 }
-
-$(document).ready( pageSetup );
  
