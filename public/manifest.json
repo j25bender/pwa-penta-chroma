@@ -8,8 +8,8 @@
     {
       "src": "./assets/penta-icon.png",
       "type": "image/png",
-      "sizes": "192x192"
+      "sizes": "512x512"
     }
   ],
-  "start_url": "https://penta-chroma.herokuapp.com/"
+  "start_url": "https://pwa-penta-chroma.herokuapp.com/"
 }
