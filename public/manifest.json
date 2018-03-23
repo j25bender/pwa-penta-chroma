@@ -1,0 +1,15 @@
+{
+  "short_name": "penta-chrome",
+  "name": "Your Favorite MarkDown Previewer",
+  "background_color": "#000",
+  "theme_color": "#262626",
+  "display": "fullscreen",
+  "icons": [
+    {
+      "src": "./assets/penta-icon.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    }
+  ],
+  "start_url": "https://penta-chroma.herokuapp.com/"
+}
