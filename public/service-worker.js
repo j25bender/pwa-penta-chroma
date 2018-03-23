@@ -3,11 +3,11 @@ this.addEventListener('install', event => {
     caches.open('assets-v1').then(cache => {
       return cache.addAll([
         '/',
-        '../palette-picker/public/assets/jquery-3.3.1.min.js',
-        '../palette-picker/public/assets/penta-icon.png',        
-        '../palette-picker/public/index.html',
-        '../palette-picker/public/css/styles.css',
-        '../palette-picker/public/js/scripts.js'
+        './index.html',
+        './js/scripts.js',
+        './css/styles.css',
+        './assets/jquery-3.3.1.min.js',
+        './assets/penta-icon.png'
       ])
     })
   );
