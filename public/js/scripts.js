@@ -62,18 +62,18 @@ $('#save-title').click( async (e) => {
 });
 
 $('#save-palette').click( async (e) => {
-  createPalettes(paletteState.palette)
   const paletteName = $('#palette-input').val();
   const projectId = $('#select-options').val();
+  const bodyObject = {palette_name: paletteName,
+                      project_id: parseInt(projectId),
+                      ...paletteState.palette}
+  createPalettes(bodyObject);                  
 
   await fetch('/api/v1/palettes', {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({
-      palette_name: paletteName,
-      project_id: parseInt(projectId),
-      ...paletteState.palette})
-  })
+    body: JSON.stringify(bodyObject)
+  });
 });
 
 const deletePalette = async (e) => {
